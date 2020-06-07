@@ -1,9 +1,14 @@
 import React from 'react';
+import { useLogin } from '~/hooks';
 
-const Home = () => (
-  <div>
-    Hello world
-  </div>
-);
+const Home = () => {
+  useLogin();
+
+  return (
+    <div>
+      Hello world
+    </div>
+  );
+};
 
 export default Home;
