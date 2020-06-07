@@ -5,5 +5,5 @@ juryou-web:
 
   build:
     env:
-      API_URL: ${env.API_URL}
-      IDP_URL: ${env.IDP_URL}
+      NEXT_PUBLIC_API_URL: ${env.NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_IDP_URL: ${env.NEXT_PUBLIC_IDP_URL}

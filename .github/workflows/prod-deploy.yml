@@ -25,8 +25,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          API_URL: ${{ secrets.API_URL }}
-          IDP_URL: ${{ secrets.IDP_URL }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_IDP_URL: ${{ secrets.NEXT_PUBLIC_IDP_URL }}
       - name: Save Serverless State
         run: aws s3 sync .serverless s3://codear-nextjs-serverless-deployment-state/juryou-web/production
         env:
