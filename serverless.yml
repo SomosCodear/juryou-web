@@ -1,0 +1,9 @@
+juryou-web:
+  component: serverless-next.js
+  inputs:
+    bucketName: juryou-web-bucket-production
+
+  build:
+    env:
+      API_URL: ${env.API_URL}
+      IDP_URL: ${env.IDP_URL}
