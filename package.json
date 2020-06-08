@@ -9,14 +9,17 @@
     "deploy:prod": "serverless"
   },
   "dependencies": {
+    "formik": "^2.1.4",
     "luxon": "^1.24.1",
     "next": "9.4.4",
     "query-string": "^6.13.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "yup": "^0.29.1"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.7",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
