@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "formik": "^2.1.4",
+    "isomorphic-unfetch": "^3.0.0",
     "luxon": "^1.24.1",
     "next": "9.4.4",
     "query-string": "^6.13.0",
