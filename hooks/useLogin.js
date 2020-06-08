@@ -1,13 +1,18 @@
 /* globals window */
 import queryString from 'query-string';
 import { DateTime } from 'luxon';
-import { AUTH_TOKEN_KEY, AUTH_EXPIRES_KEY } from '~/data/constants';
 import { IDP_URL } from '~/data/config';
+import {
+  getAuthToken,
+  setAuthToken,
+  getAuthExpires,
+  setAuthExpires,
+} from '~/api/auth';
 
 export const useLogin = () => {
   if (typeof window !== 'undefined') {
-    let authToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
-    let authExpires = window.localStorage.getItem(AUTH_EXPIRES_KEY);
+    let authToken = getAuthToken();
+    let authExpires = getAuthExpires();
 
     if (window.location.hash !== '') {
       const hash = queryString.parse(window.location.hash.slice(1));
@@ -17,8 +22,8 @@ export const useLogin = () => {
       authToken = idToken;
       authExpires = DateTime.utc().plus({ seconds: expiresIn }).toISO();
 
-      window.localStorage.setItem(AUTH_TOKEN_KEY, authToken);
-      window.localStorage.setItem(AUTH_EXPIRES_KEY, authExpires);
+      setAuthToken(authToken);
+      setAuthExpires(authExpires);
     }
 
     if (authToken == null || DateTime.fromISO(authExpires) <= DateTime.utc()) {
