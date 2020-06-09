@@ -13,8 +13,8 @@ const customerSchema = yup.object().shape({
 });
 const itemSchema = yup.object().shape({
   name: yup.string().required(),
-  amount: yup.number().integer().moreThan(0),
-  price: yup.string().matches(/^\d+\.?\d*$/),
+  amount: yup.number().integer().moreThan(0).required(),
+  price: yup.string().matches(/^\d+\.?\d*$/).required(),
 });
 export const invoiceSchema = yup.object().shape({
   email: emailSchema.required(),
