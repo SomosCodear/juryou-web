@@ -17,32 +17,40 @@ const InvoiceForm = styled(Form)`
   }
 `;
 
+const defaultEmail = {
+  sender: '',
+  subject: '',
+  body: '',
+  attachmentName: 'Factura.pdf',
+};
+const defaultCustomer = { identityDocument: '', name: '', email: '' };
+const defaultItem = { name: '', amount: '1', price: '' };
+
 const Home = () => {
   useLogin();
 
   return (
     <Formik
       initialValues={{
-        customer: {
-          identityDocument: '',
-          name: '',
-          email: '',
-        },
-        email: {
-          sender: '',
-          subject: '',
-          body: '',
-          attachmentName: 'Factura.pdf',
-        },
-        items: [{ name: '', amount: '1', price: '' }],
+        email: { ...defaultEmail },
+        customer: { ...defaultCustomer },
+        items: [{ ...defaultItem }],
       }}
       validationSchema={invoiceSchema}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         await create(RESOURCES.INVOICE, invoiceSchema.cast(values));
         setSubmitting(false);
+        resetForm({ initialValues: values, initialTouched: null });
       }}
+      validateOnMount
     >
-      {({ values, isSubmitting }) => (
+      {({
+        values,
+        isValid,
+        submitCount,
+        isSubmitting,
+        setFieldValue,
+      }) => (
         <InvoiceForm>
           <fieldset>
             <legend>
@@ -70,6 +78,14 @@ const Home = () => {
               Nombre para el adjunto:&nbsp;
               <Field id="attachmentName" name="email.attachmentName" />
             </label>
+            <br />
+            <br />
+            <button
+              type="button"
+              onClick={() => setFieldValue('email', { ...defaultEmail })}
+            >
+              Limpiar Email
+            </button>
           </fieldset>
           <fieldset>
             <legend>
@@ -91,6 +107,14 @@ const Home = () => {
               Email:&nbsp;
               <Field name="customer.email" type="email" />
             </label>
+            <br />
+            <br />
+            <button
+              type="button"
+              onClick={() => setFieldValue('customer', { ...defaultCustomer })}
+            >
+              Limpiar Cliente
+            </button>
           </fieldset>
           <fieldset>
             <legend>
@@ -122,10 +146,14 @@ const Home = () => {
                           Precio:&nbsp;
                           <Field id={`itemPrice${index}`} name={`items.${index}.price`} />
                         </label>
-                        &nbsp;&nbsp;
-                        <button type="button" onClick={() => remove(index)}>
-                          Remover item
-                        </button>
+                        {values.items.length > 1 ? (
+                          <>
+                            &nbsp;&nbsp;
+                            <button type="button" onClick={() => remove(index)}>
+                              Remover item
+                            </button>
+                          </>
+                        ) : null}
                       </div>
                       <br />
                     </Fragment>
@@ -136,14 +164,26 @@ const Home = () => {
                   >
                     Agregar item
                   </button>
+                  {values.items.length > 1 ? (
+                    <>
+                      &nbsp;
+                      <button
+                        type="button"
+                        onClick={() => setFieldValue('items', [{ ...defaultItem }])}
+                      >
+                        Limpiar Items
+                      </button>
+                    </>
+                  ) : null}
                 </>
               )}
             </FieldArray>
           </fieldset>
           <br />
-          <button type="submit" disabled={isSubmitting}>
+          <button type="submit" disabled={!isValid || isSubmitting}>
             Enviar
           </button>
+          {submitCount > 1 && !isSubmitting ? ' Enviado!' : null}
         </InvoiceForm>
       )}
     </Formik>
